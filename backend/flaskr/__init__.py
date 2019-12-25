@@ -24,9 +24,6 @@ def create_app(test_config=None):
   setup_db(app)
   CORS(app, resources={r'/api/*': {'origins': '*'}})
 
-  '''
-  Use the after_request decorator to set Access-Control-Allow
-  '''
   @app.after_request
   def after_request(response):
     response.headers.add('Access-Control-Allow-headers', 'Content-Type, Authorization')
@@ -34,8 +31,8 @@ def create_app(test_config=None):
     return response
 
   '''
-  Endpoint to handle GET requests for all available categories.
-  # '''
+  Get all available categories.
+  '''
   @app.route('/categories')
   def get_categories():
     categories = Category.query.all()
@@ -45,7 +42,6 @@ def create_app(test_config=None):
     for category in categories:
       categories_dict[category.id] = category.type
   
-
     if len(categories) == 0:
       abort(404)
 
@@ -54,9 +50,9 @@ def create_app(test_config=None):
       'categories': categories_dict
     })
     
+
   '''
-  An endpoint to handle GET requests for questions, 
-  including pagination (every 10 questions), a list of questions, 
+  Get questions, pagination, a list of questions, 
   number of total questions, current category, categories.
   '''
   @app.route('/questions')
@@ -82,13 +78,12 @@ def create_app(test_config=None):
       'categories': categories_dict
     })
 
+
   '''
-  An endpoint to DELETE question using a question ID.
-  TEST: When you click the trash icon next to a question, the question will be removed.
-  This removal will persist in the database and when you refresh the page. 
+  Delete a question.
   '''
   @app.route('/questions/<int:id>', methods=['DELETE'])
-  def delete_questiond(id):
+  def delete_question(id):
     try:
       select_question = Question.query.filter_by(id=id).one_or_none()
 
@@ -106,14 +101,9 @@ def create_app(test_config=None):
     except:
       abort(422)
   
-  '''
-  Andpoint to POST a new question, 
-  which will require the question and answer text, 
-  category, and difficulty score.
 
-  TEST: When you submit a question on the "Add" tab, 
-  the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
+  '''
+  Get questions based on a search term.
   '''
   @app.route('/questions', methods=['POST'])
   def create_question():
@@ -134,6 +124,8 @@ def create_app(test_config=None):
         'total_questions': len(Question.query.all())
       })
     
+    
+    # Post a new question.
     else:
       new_question = body.get('question')
       new_answer = body.get('answer')
@@ -160,27 +152,27 @@ def create_app(test_config=None):
 
       except:
         abort(422)
-
-
-  '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
-
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
-  '''
+      
 
   '''
-  @TODO: 
-  Create a GET endpoint to get questions based on category. 
-
-  TEST: In the "List" tab / main screen, clicking on one of the 
-  categories in the left column will cause only questions of that 
-  category to be shown. 
+  Get questions based on category.
   '''
+  @app.route('/categories/<int:id>/questions')
+  def get_questions_by_category(id):
+    category = Category.query.filter_by(id=id).one_or_none()
+
+    if category is None:
+      abort(400)
+    
+    selection = Question.query.filter_by(category=category.id).all()
+    paginated_questions = paginate_questions(request, selection)
+
+    return jsonify({
+      'success': True,
+      'questions': paginated_questions,
+      'total_questions': len(Question.query.all()),
+      'current_category': category.type
+    })
 
 
   '''
