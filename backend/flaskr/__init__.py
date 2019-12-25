@@ -13,7 +13,7 @@ def paginate_questions(request, selection):
   start = (page - 1) * QUESTIONS_PER_PAGE
   end = start + QUESTIONS_PER_PAGE
 
-  questions = [question.format() for question in slection]
+  questions = [question.format() for question in selection]
   current_questions = questions[start:end]
 
   return current_questions
@@ -22,11 +22,7 @@ def paginate_questions(request, selection):
 def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
-  
-  '''
-  Set up CORS. Allow '*' for origins.
-  '''
-  CORS(app, resources={r'*/api/*': {origin: '*'}})
+  CORS(app, resources={r'/api/*': {'origins': '*'}})
 
   '''
   Use the after_request decorator to set Access-Control-Allow
@@ -39,10 +35,10 @@ def create_app(test_config=None):
 
   '''
   Endpoint to handle GET requests for all available categories.
-  '''
+  # '''
   @app.route('/categories')
   def get_categories():
-    categories = Category.query.order_by(Category.id).all()
+    categories = Category.query.all()
 
     # Create categories dict
     categories_dict = {}
@@ -55,27 +51,20 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'categories': categories_dict,
+      'categories': categories_dict
     })
     
   '''
-  @TODO: 
-  Create an endpoint to handle GET requests for questions, 
-  including pagination (every 10 questions). 
-  This endpoint should return a list of questions, 
-  number of total questions, current category, categories. 
-
-  TEST: At this point, when you start the application
-  you should see questions and categories generated,
-  ten questions per page and pagination at the bottom of the screen for three pages.
-  Clicking on the page numbers should update the questions. 
+  An endpoint to handle GET requests for questions, 
+  including pagination (every 10 questions), a list of questions, 
+  number of total questions, current category, categories.
   '''
   @app.route('/questions')
   def get_questions():
 
     # Get questions then paginate
-    questions = Question.query.all()
-    current_questions = paginate_question(request, questions)
+    questions = Question.query.order_by(Question.id).all()
+    current_questions = paginate_questions(request, questions)
 
     # Create categories dict
     categories = Category.query.order_by(Category.id).all()
@@ -100,9 +89,9 @@ def create_app(test_config=None):
   This removal will persist in the database and when you refresh the page. 
   '''
   
+  
   '''
-  @TODO: 
-  Create an endpoint to POST a new question, 
+  Andpoint to POST a new question, 
   which will require the question and answer text, 
   category, and difficulty score.
 
@@ -110,6 +99,54 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods=['POST'])
+  def create_question():
+    body = request.get_json()
+    # search = body.get('search')
+
+    if body.get('searchTerm'):
+      search_Term = body.get('searchTerm')
+      # selection = Question.query.filter(Question.question.ilike(f'%{key_word}%')).all()
+      selection = Question.query.filter(Question.question.ilike(f'%{search_Term}%')).all()
+      
+
+      if len(selection) == 0:
+        abort(404)
+
+      current_questions = paginate_questions(request, selection)
+
+      return jsonify({
+        'success': True,
+        'questions': current_questions,
+        'total_questions': len(current_questions)
+      })
+    
+    else:
+      new_question = body.get('question')
+      new_answer = body.get('answer')
+      new_category = body.get('category')
+      new_difficulty = body.get('difficulty')
+      
+      if ((new_question is None) or (new_answer is None) or (new_category is None) or (new_difficulty is None)):
+        abort(422)
+      
+      try:
+        question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+        question.insert()
+
+        selection = Question.query.order_by(Question.id).all()
+        current_questions = paginate_questions(request, selection)
+
+        return jsonify({
+          'success': True,
+          'created': question.id,
+          'questions': current_questions,
+          'total_questions': len(Question.query.all())
+        })
+
+      except:
+        abort(422)
+
 
   '''
   @TODO: 
