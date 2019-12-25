@@ -9,5 +9,7 @@ venv
 ._*
 .Spotlight-V100
 .Trashes
+.gitignore
 ehthumbs.db
 Thumbs.db
+node_modules
