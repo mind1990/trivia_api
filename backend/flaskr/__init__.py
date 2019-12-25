@@ -83,12 +83,28 @@ def create_app(test_config=None):
     })
 
   '''
-  @TODO: 
-  Create an endpoint to DELETE question using a question ID.
+  An endpoint to DELETE question using a question ID.
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
-  
+  @app.route('/questions/<int:id>', methods=['DELETE'])
+  def delete_questiond(id):
+    try:
+      select_question = Question.query.filter_by(id=id).one_or_none()
+
+      if select_question is None:
+        abort(404)
+      
+      else:
+        select_question.delete()
+
+      return jsonify({
+        'success': True,
+        'deleted': id
+      })
+
+    except:
+      abort(422)
   
   '''
   Andpoint to POST a new question, 
@@ -102,14 +118,11 @@ def create_app(test_config=None):
   @app.route('/questions', methods=['POST'])
   def create_question():
     body = request.get_json()
-    # search = body.get('search')
 
     if body.get('searchTerm'):
       search_Term = body.get('searchTerm')
-      # selection = Question.query.filter(Question.question.ilike(f'%{key_word}%')).all()
       selection = Question.query.filter(Question.question.ilike(f'%{search_Term}%')).all()
       
-
       if len(selection) == 0:
         abort(404)
 
@@ -118,7 +131,7 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'questions': current_questions,
-        'total_questions': len(current_questions)
+        'total_questions': len(Question.query.all())
       })
     
     else:
@@ -141,6 +154,7 @@ def create_app(test_config=None):
           'success': True,
           'created': question.id,
           'questions': current_questions,
+          'question_created': question.question,
           'total_questions': len(Question.query.all())
         })
 
