@@ -12,7 +12,7 @@ This project is part of Udacity's Full-stack Web Development nano degree program
 
 Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others. 
 
-## Tasks
+## Runninng this project
 
 There are `TODO` comments throughout project. Start by reading the READMEs in:
 
