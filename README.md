@@ -10,32 +10,48 @@ This project is part of Udacity's Full-stack Web Development nano degree program
 4) Search for questions based on a text query string.
 5) Play the quiz game, randomizing either all questions or within a specific category. 
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others. 
-
 ## Runninng this project
 
-There are `TODO` comments throughout project. Start by reading the READMEs in:
+To run this project you will need:
 
-1. [`./frontend/`](./frontend/README.md)
-2. [`./backend/`](./backend/README.md)
+1. Python3
+2. pip3
+3. psycopg2 or psycopg2-binary
+4. node
+5. npm
 
-We recommend following the instructions in those files in order. This order will look familiar from our prior work in the course.
+### Backend
 
-## Starting and Submitting the Project
+#### Installing dependencies
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the [project repository]() and [Clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom. 
+After cloning this project, in your terminal, cd into `/backend` directory then run: 
+
+`pip3 install -r requirements.txt`
+
+#### Running the server
+
+After installing the dependencies, in `/bakend` directory run:
+
+`export FLASK_APP=flaskr`
+`export FLASK_ENV=development`
+`flask run`
+
+### Frontend
+
+#### Installing dependencies
+
+Go to`./frontend` directory then run:
+
+`npm install` then `npm start`
+
 
 ## About the Stack
 
 We started the full stack application for you. It is desiged with some key functional areas:
 
-### Backend
 
-The `./backend` directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in app.py to define your endpoints and can reference models.py for DB and SQLAlchemy setup. 
 
-### Frontend
 
-The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. You will need to update the endpoints after you define them in the backend. Those areas are marked with TODO and can be searched for expediency. 
 
 Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. 
 
