@@ -295,4 +295,14 @@ If the question does not exist, returns status code, message and status:
 }
 ```
 
+## Testing
+
+To run the tests, in /bakend directory, run:
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
+
 
