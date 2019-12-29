@@ -124,7 +124,7 @@ Example:
 
 ### GET `/questions`
 
-Returns a dictionary of categories and questions.
+Returns a dictionary of categorie, questions, status and number of toal questions.
 
 Example:
 ```
@@ -294,7 +294,5 @@ If the question does not exist, returns status code, message and status:
     "success": false
 }
 ```
-
-
 
 
