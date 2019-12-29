@@ -25,8 +25,10 @@ To run this project you will need:
 #### Installing dependencies
 
 After cloning this project, in your terminal, cd into `/backend` directory then run: 
-
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+pslq trivia < trivia.psql
+```
 
 #### Running the server
 
@@ -36,6 +38,9 @@ export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
 ```
+
+
+
 
 
 ### Frontend
@@ -52,14 +57,27 @@ In `/frontend` directory run:
 
 `npm start`
 
-## About the Stack
-
-We started the full stack application for you. It is desiged with some key functional areas:
 
 
+## API Endpoints
+
+### GET `/categories` 
+
+Returns a dictionary with category ids and categories names
+```
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "success": true,
+    "total_categories": 6
+}
+```
 
 
 
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. 
-
-[View the README.md within ./frontend for more details.](./frontend/README.md)
