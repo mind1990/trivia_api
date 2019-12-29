@@ -32,7 +32,10 @@ After cloning this project, in your terminal, cd into `/backend` directory then 
 
 After installing the dependencies, in `/bakend` directory run:
 
-`export FLASK_APP=flaskr \n export FLASK_ENV=development \n flask run `
+`export FLASK_APP=flaskr
+export FLASK_ENV=development
+flask run
+`
 
 
 ### Frontend
