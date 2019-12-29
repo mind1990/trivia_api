@@ -1,8 +1,8 @@
 # Full Stack Trivia API Project
 
-## Full Stack Trivia
+## About this project
 
-This project is part of Udacity's Full-stack Web Development nano degree program. This project's goal is for students to develop the API and test cases.
+This project is part of Udacity's Full-stack Web Development nano degree program. This project's goal is for students to develop the API and test cases following functionalities:
 
 1) Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer. 
 2) Delete questions.
