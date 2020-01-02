@@ -274,9 +274,9 @@ Example:
 
 ### POST `/questions` when `searchTerm` is passed in body
 
-Search questions with a keyword
+Search questions with a keyword.
 
-If `searchTerm` is included in the request, returns JSON object of a question list containing questions with `searchTerm`
+If `searchTerm` is included in the request, returns JSON object of a question list containing questions with `searchTerm`.
 
 Example request using curl:
 `curl http://127.0.0.1:3000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm": "what"}'` will return:
@@ -354,7 +354,7 @@ Example request using curl:
 
 ### DELETE `/questions/<int:id>`
 
-Delete a question by id
+Delete a question by id.
 
 If success, returns deleted id and status.
 
@@ -378,7 +378,9 @@ If the question does not exist, returns status code, message and status:
 ### POST `/quizzes`
 
 This endpoint gets questions for the users to play the quizzes.
+
 Send POST request JSON as parameter of category and previous questions.
+
 Returns random a random JSON object of question, answer, category, difficulty, question id, and request status.
 
 Example request using curl:
