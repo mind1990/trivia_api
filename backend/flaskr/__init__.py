@@ -68,6 +68,7 @@ def create_app(test_config=None):
 
         # Get questions then paginate
         questions = Question.query.order_by(Question.id).all()
+
         current_questions = paginate_questions(request, questions)
 
         # Create categories dict
@@ -105,7 +106,8 @@ def create_app(test_config=None):
                     'deleted': id
                 }
             )
-        abort(422)
+        except(error):
+            abort(422)
 
     '''
     Get questions based on a search term.
@@ -140,12 +142,12 @@ def create_app(test_config=None):
             new_category = body.get('category')
             new_difficulty = body.get('difficulty')
 
-            if ((new_question is None) or
+            if (
+                (new_question is None) or
                 (new_answer is None) or
                 (new_category is None) or
                 (new_difficulty is None)
-                )
-            :
+            ):
                 abort(422)
 
             try:
@@ -160,15 +162,16 @@ def create_app(test_config=None):
                 selection = Question.query.order_by(Question.id).all()
                 current_questions = paginate_questions(request, selection)
 
-            return jsonify({
-                'success': True,
-                'created': question.id,
-                'questions': current_questions,
-                'question_created': question.question,
-                'total_questions': len(Question.query.all())
-            })
-
-            abort(422)
+                return jsonify(
+                    {
+                        'success': True,
+                        'created': question.id,
+                        'questions': current_questions,
+                        'question_created': question.question,
+                        'total_questions': len(Question.query.all())
+                    })
+            except(error):
+                abort(422)
 
     '''
     Get questions based on category.
